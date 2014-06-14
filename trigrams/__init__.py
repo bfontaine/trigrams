@@ -11,6 +11,11 @@ import json
 from random import sample
 
 class TrigramsDB(object):
+    """
+    A trigrams database. It has two main methods: ``feed``, to initialize it
+    with some existing text, and ``generate``, to generate some new text. The
+    more text you feed it, the more "random" the generated text will be.
+    """
 
     _WSEP = '###'  # words separator
 
@@ -41,6 +46,10 @@ class TrigramsDB(object):
         """
         Feed some text to the database, either from a string (``text``) or a
         file (``source``).
+
+        >>> db = TrigramsDB()
+        >>> db.feed("This is my text")
+        >>> db.feed(source="some/file.txt")
         """
         if text is not None:
             words = re.split(r'\s+', text)
@@ -94,6 +103,9 @@ class TrigramsDB(object):
 
 
     def _load(self):
+        """
+        Load the database from its ``dbfile`` if it has one
+        """
         if self.dbfile is not None:
             with open(self.dbfile, 'r'):
                 self._db = json.loads(f.read())
@@ -102,10 +114,18 @@ class TrigramsDB(object):
 
 
     def _dump(self):
+        """
+        Return a string version of the database, which can then be used by
+        ``_load`` to get the original object back.
+        """
         return json.dumps(self._db)
 
 
     def _get(self, word1, word2):
+        """
+        Return a possible next word after ``word1`` and ``word2``, or ``None``
+        if there's no possibility.
+        """
         key = self._WSEP.join([self._sanitize(word1), self._sanitize(word2)])
         key = key.lower()
         if key not in self._db:
@@ -115,10 +135,16 @@ class TrigramsDB(object):
 
 
     def _sanitize(self, word):
+        """
+        Sanitize a word for insertion in the DB
+        """
         return word.replace(self._WSEP, '')
 
 
     def _insert(self, trigram):
+        """
+        Insert a trigram in the DB
+        """
         words = list(map(self._sanitize, trigram))
 
         key = self._WSEP.join(words[:2]).lower()
