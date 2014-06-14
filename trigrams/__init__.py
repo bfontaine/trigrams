@@ -4,6 +4,8 @@
 Simple trigrams-based text generation
 """
 
+__version__ = '0.1.0'
+
 import re
 import json
 from random import sample
