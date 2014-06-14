@@ -10,6 +10,7 @@ import re
 import json
 from random import sample
 
+
 class TrigramsDB(object):
     """
     A trigrams database. It has two main methods: ``feed``, to initialize it
@@ -27,7 +28,6 @@ class TrigramsDB(object):
         self.dbfile = dbfile
         self._load()
 
-
     def save(self, output=None):
         """
         Save the database to a file. If ``output`` is not given, the ``dbfile``
@@ -40,7 +40,6 @@ class TrigramsDB(object):
 
         with open(output, 'w') as f:
             f.write(self._dump())
-
 
     def feed(self, text=None, source=None):
         """
@@ -60,7 +59,6 @@ class TrigramsDB(object):
         if source is not None:
             with open(source, 'r') as f:
                 self.feed(f.read())
-
 
     def generate(self, **kwargs):
         """
@@ -90,7 +88,6 @@ class TrigramsDB(object):
 
             wlen = 2
 
-
         while wlen < max_wlen:
             next_word = self._get(words[-2], words[-1])
             if next_word is None:
@@ -100,7 +97,6 @@ class TrigramsDB(object):
             wlen += 1
 
         return ' '.join(words)
-
 
     def _load(self):
         """
@@ -112,14 +108,12 @@ class TrigramsDB(object):
         else:
             self._db = {}
 
-
     def _dump(self):
         """
         Return a string version of the database, which can then be used by
         ``_load`` to get the original object back.
         """
         return json.dumps(self._db)
-
 
     def _get(self, word1, word2):
         """
@@ -133,13 +127,11 @@ class TrigramsDB(object):
 
         return sample(self._db[key], 1)[0]
 
-
     def _sanitize(self, word):
         """
         Sanitize a word for insertion in the DB
         """
         return word.replace(self._WSEP, '')
-
 
     def _insert(self, trigram):
         """
