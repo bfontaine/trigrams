@@ -34,7 +34,7 @@ class TrigramsDB(object):
         given in the constructor is used.
         """
         if output is None:
-            if dbfile is None:
+            if self.dbfile is None:
                 return
             output = self.dbfile
 
@@ -103,7 +103,7 @@ class TrigramsDB(object):
         Load the database from its ``dbfile`` if it has one
         """
         if self.dbfile is not None:
-            with open(self.dbfile, 'r'):
+            with open(self.dbfile, 'r') as f:
                 self._db = json.loads(f.read())
         else:
             self._db = {}
