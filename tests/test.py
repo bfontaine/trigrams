@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
 import trigrams
 
+
 class TestTrigramsVersion(unittest.TestCase):
     def test_version(self):
         self.assertRegexpMatches(trigrams.__version__, r'^\d+\.\d+\.\d+')
